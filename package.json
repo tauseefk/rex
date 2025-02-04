@@ -4,6 +4,7 @@
   "description": "Everything is streams.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "npm run build",
@@ -23,10 +24,10 @@
     "url": "https://github.com/tauseefk/rex/issues"
   },
   "homepage": "https://github.com/tauseefk/rex#readme",
-  "devDependencies": {
-    "typescript": "^4.2.4"
-  },
   "dependencies": {
     "biome": "^0.3.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
   }
 }

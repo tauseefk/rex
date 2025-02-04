@@ -4,7 +4,7 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "bundler",
-    "module": "esnext",
+    "module": "ESNext",
     "strict": true
   },
   "include": ["*.ts"],
