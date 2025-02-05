@@ -106,7 +106,7 @@ export default class Stream<T> implements Observable<T> {
 }
 
 /**
- * This function creates a mapping operator that transforms the emitted values of a stream using a provided function.
+ * Creates a mapping operator that applies the mapping function to each item of the stream.
  * @template T, U
  * @param {(t: T) => U} fn
  * @returns {(s: Stream<T>) => Stream<U>}
@@ -120,7 +120,6 @@ function _map<T, U>(fn: (t: T) => U): (s: Stream<T>) => Stream<U> {
       });
 
       _mappedStream.unsubscribe = () => {
-        observer.complete();
         if (typeof stream.unsubscribe === 'function') {
           stream.unsubscribe();
         }
@@ -148,7 +147,6 @@ function _filter<T>(fn: (t: T) => boolean): (s: Stream<T>) => Stream<T> {
       });
 
       _filteredStream.unsubscribe = () => {
-        observer.complete();
         if (typeof stream.unsubscribe === 'function') {
           stream.unsubscribe();
         }
@@ -160,7 +158,7 @@ function _filter<T>(fn: (t: T) => boolean): (s: Stream<T>) => Stream<T> {
 }
 
 /**
- * A utility function to delay the emission of items from the observable stream by a specified time in milliseconds.
+ * Delays the emission of items from the observable stream by a specified time in milliseconds.
  * @template T
  * @param {number} ms
  * @returns {(s: Stream<T>) => Stream<T>}
@@ -185,7 +183,6 @@ function debounceTime<T>(ms: number): (s: Stream<T>) => Stream<T> {
 
       _debouncedStream.unsubscribe = () => {
         if (_timer) window.clearTimeout(_timer);
-        observer.complete();
         if (typeof stream.unsubscribe === 'function') {
           stream.unsubscribe();
         }
@@ -225,7 +222,6 @@ function _withLatestFrom<T, U>(
       });
 
       _tupleStream.unsubscribe = () => {
-        observer.complete();
         if (typeof streamB.unsubscribe === 'function') {
           streamB.unsubscribe();
         }

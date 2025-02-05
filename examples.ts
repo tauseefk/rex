@@ -11,7 +11,8 @@ const skipN = (n: number) => {
   };
 };
 
-// Explanation:
+// Emit a value every 100 millisecond and skip every 10
+//
 // - `Stream.fromInterval(100)` creates a stream that emits a value every 100 milliseconds.
 // - `skipN(10)` creates a filter that allows only every 10th value to pass through.
 const $oneSecStream = Stream.fromInterval(100).filter(skipN(10));
