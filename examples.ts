@@ -47,4 +47,3 @@ $mixedTimerStream.subscribe({
   },
 });
 
-

@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/tauseefk/rex#readme",
   "devDependencies": {
-    "biome": "^0.3.3",
+    "@biomejs/biome": "1.9.4",
     "typescript": "^5.7.3"
   }
 }
