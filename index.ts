@@ -204,6 +204,8 @@ function _withLatestFrom<T, U>(
 ): (streamB: Stream<U>) => Stream<[T, U]> {
   let dataA: T;
   let dataB: U;
+
+  let shouldComplete = false;
   return (streamB) => {
     const _tupleStream: Stream<[T, U]> = new Stream((observer) => {
       streamA.subscribe({
@@ -211,14 +213,28 @@ function _withLatestFrom<T, U>(
           dataA = data;
           observer.next([dataA, dataB]);
         },
-        complete: observer.complete,
+        complete: () => {
+          if (!shouldComplete) {
+            shouldComplete = true;
+            return;
+          }
+
+          observer.complete();
+        },
       });
       streamB.subscribe({
         next: (data) => {
           dataB = data;
           observer.next([dataA, dataB]);
         },
-        complete: observer.complete,
+        complete: () => {
+          if (!shouldComplete) {
+            shouldComplete = true;
+            return;
+          }
+
+          observer.complete();
+        },
       });
 
       _tupleStream.unsubscribe = () => {

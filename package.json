@@ -24,10 +24,8 @@
     "url": "https://github.com/tauseefk/rex/issues"
   },
   "homepage": "https://github.com/tauseefk/rex#readme",
-  "dependencies": {
-    "biome": "^0.3.3"
-  },
   "devDependencies": {
+    "biome": "^0.3.3",
     "typescript": "^5.7.3"
   }
 }
