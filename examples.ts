@@ -35,7 +35,8 @@ $oneSecStream.subscribe({
 // - `Stream.fromInterval(1000)` creates a stream that emits a value every 1 second.
 // - withLatestFrom combines both the Streams.
 const $halfSecStream = Stream.fromInterval(500);
-const $mixedTimerStream = Stream.fromInterval(1000).withLatestFrom($halfSecStream);
+const $mixedTimerStream =
+  Stream.fromInterval(1000).withLatestFrom($halfSecStream);
 
 $mixedTimerStream.subscribe({
   next: ([halfSecTick, oneSecTick]) => {
@@ -46,4 +47,3 @@ $mixedTimerStream.subscribe({
     console.log('stream concluded');
   },
 });
-
