@@ -29,6 +29,10 @@ export default class Stream<T> implements Observable<T> {
     return this.compose(_map(fn));
   }
 
+  switchMap<U>(fn: (t: T) => Stream<U>): Stream<U> {
+    return this.compose(_switchMap(fn));
+  }
+
   filter(fn: (t: T) => boolean): Stream<T> {
     return this.compose(_filter(fn));
   }
@@ -248,5 +252,38 @@ function _withLatestFrom<T, U>(
     });
 
     return _tupleStream;
+  };
+}
+
+/**
+ * @template T, U
+ * @param {(t: T) => Stream<U>} fn
+ * @returns {(s: Stream<T>) => Stream<U>}
+ */
+function _switchMap<T, U>(
+  fn: (t: T) => Stream<U>,
+): (s: Stream<T>) => Stream<U> {
+  let innerStream: Stream<U> | null = null;
+
+  return (outerStream) => {
+    const _switchMapStream: Stream<U> = new Stream((observer) => {
+      outerStream.subscribe({
+        next: (data) => {
+          innerStream?.unsubscribe?.();
+
+          innerStream = fn(data);
+          innerStream.subscribe(observer);
+        },
+        complete: () => observer.complete(),
+      });
+
+      _switchMapStream.unsubscribe = () => {
+        innerStream?.unsubscribe?.();
+        outerStream?.unsubscribe?.();
+        observer.complete();
+      };
+    });
+
+    return _switchMapStream;
   };
 }

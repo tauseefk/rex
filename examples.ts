@@ -1,4 +1,4 @@
-import Stream from './index';
+import Stream from './index.js';
 
 /**
  * Returns a function that evaluates to true once every `n` calls.

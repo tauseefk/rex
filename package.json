@@ -8,16 +8,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "npm run build",
+    "examples": "node ./dist/examples.js",
     "build": "tsc --outDir dist"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tauseefk/rex.git"
   },
-  "keywords": [
-    "observables",
-    "streams"
-  ],
+  "keywords": ["observables", "streams"],
   "author": "tauseefk",
   "license": "MIT",
   "bugs": {

@@ -7,6 +7,10 @@
     "module": "ESNext",
     "strict": true
   },
-  "include": ["*.ts"],
-  "exclude": ["/dist"]
+  "include": [
+    "*.ts"
+  ],
+  "exclude": [
+    "/dist"
+  ]
 }
