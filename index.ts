@@ -4,7 +4,7 @@ interface Observer<T> {
 }
 
 interface Observable<T> {
-  subscribe: (observer: Observer<T>) => void;
+  subscribe: (observer: Observer<T>) => () => void;
   unsubscribe?: () => void;
 }
 
@@ -13,10 +13,13 @@ interface Observable<T> {
  * @param {function} subscribe
  */
 export default class Stream<T> implements Observable<T> {
-  subscribe: (o: Observer<T>) => void;
+  subscribe: (o: Observer<T>) => () => void;
   unsubscribe?: () => void;
 
-  constructor(subscribe: (o: Observer<T>) => void, unsubscribe?: () => void) {
+  constructor(
+    subscribe: (o: Observer<T>) => () => void,
+    unsubscribe?: () => void,
+  ) {
     this.subscribe = subscribe;
     this.unsubscribe = unsubscribe;
   }
@@ -61,6 +64,8 @@ export default class Stream<T> implements Observable<T> {
         observer.complete();
         target.removeEventListener(type, observer.next);
       };
+
+      return _streamFromEvent.unsubscribe;
     });
 
     return _streamFromEvent;
@@ -82,6 +87,8 @@ export default class Stream<T> implements Observable<T> {
         observer.complete();
         clearTimeout(_timer);
       };
+
+      return _streamFromTimer.unsubscribe;
     });
 
     return _streamFromTimer;
@@ -103,6 +110,8 @@ export default class Stream<T> implements Observable<T> {
         observer.complete();
         clearInterval(_timer);
       };
+
+      return _streamFromInterval.unsubscribe;
     });
 
     return _streamFromInterval;
@@ -128,6 +137,8 @@ function _map<T, U>(fn: (t: T) => U): (s: Stream<T>) => Stream<U> {
           stream.unsubscribe();
         }
       };
+
+      return _mappedStream.unsubscribe;
     });
 
     return _mappedStream;
@@ -155,6 +166,8 @@ function _filter<T>(fn: (t: T) => boolean): (s: Stream<T>) => Stream<T> {
           stream.unsubscribe();
         }
       };
+
+      return _filteredStream.unsubscribe;
     });
 
     return _filteredStream;
@@ -191,6 +204,8 @@ function debounceTime<T>(ms: number): (s: Stream<T>) => Stream<T> {
           stream.unsubscribe();
         }
       };
+
+      return _debouncedStream.unsubscribe;
     });
 
     return _debouncedStream;
@@ -249,6 +264,8 @@ function _withLatestFrom<T, U>(
           streamA.unsubscribe();
         }
       };
+
+      return _tupleStream.unsubscribe;
     });
 
     return _tupleStream;
@@ -282,6 +299,8 @@ function _switchMap<T, U>(
         outerStream?.unsubscribe?.();
         observer.complete();
       };
+
+      return _switchMapStream.unsubscribe;
     });
 
     return _switchMapStream;
