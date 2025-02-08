@@ -5,12 +5,9 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "bundler",
     "module": "ESNext",
-    "strict": true
+    "strict": true,
+    "target": "ES2022"
   },
-  "include": [
-    "*.ts"
-  ],
-  "exclude": [
-    "/dist"
-  ]
+  "include": ["*.ts"],
+  "exclude": ["/dist"]
 }
