@@ -1,4 +1,7 @@
 ## Rex
+
+![rex-with-border@2x](https://github.com/user-attachments/assets/f2dbe8c0-052b-417b-bf7b-efef108ecbe4)
+
 Tiny arms but bytes.
 
 #### Combine two streams
