@@ -4,7 +4,7 @@
 
 Tiny arms but bytes.
 
-#### Combine two streams
+#### Create a stream and subscribe
 
 ```typescript
 // - `Stream.fromInterval(100)` creates a stream that emits a value every 100 milliseconds.
