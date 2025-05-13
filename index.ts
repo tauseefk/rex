@@ -95,6 +95,37 @@ export default class Stream<T> implements Observable<T> {
   }
 
   /**
+   * @param {ReadableStream<T>} rs
+   * @returns {Stream<T>}
+   */
+  static fromReadableStream<T>(rs: ReadableStream<T>): Stream<T> {
+    const _streamFromReadableStream: Stream<T> = new Stream((observer) => {
+      const read = async () => {
+        const reader = rs.getReader();
+        const result = await reader.read();
+        if (!result.done) {
+          observer.next(result.value);
+          reader.releaseLock();
+          read();
+        } else {
+          observer.complete();
+        }
+      };
+
+      _streamFromReadableStream.unsubscribe = () => {
+        observer.complete();
+      };
+
+      // start reading data from the ReadableStream
+      read();
+
+      return _streamFromReadableStream.unsubscribe;
+    });
+
+    return _streamFromReadableStream;
+  }
+
+  /**
    * @param {number} ms
    * @returns {Stream<number>}
    */

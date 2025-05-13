@@ -47,3 +47,44 @@ $mixedTimerStream.subscribe({
     console.log('stream concluded');
   },
 });
+
+function* numberGenerator(): Generator<number> {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+// Create a ReadableStream from the numberGenerator function
+const rs = new ReadableStream({
+  start: (controller) => {
+    const getNumbers = numberGenerator();
+    const read = async () => {
+      while (true) {
+        const result = getNumbers.next();
+
+        if (result.done) {
+          break;
+        }
+
+        controller.enqueue(result.value);
+      }
+      controller.close();
+    };
+
+    read();
+  },
+});
+
+// Emit a tuple of values every 500 millisecond
+//
+// - `Stream.fromReadableStream(rs)` creates a stream that emits values read from the ReadableStream.
+const $readableStream = Stream.fromReadableStream(rs);
+
+$readableStream.subscribe({
+  next: (value) => {
+    console.log('$readableStream', value);
+  },
+  complete: () => {
+    console.log('$readableStream concluded');
+  },
+});
