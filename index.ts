@@ -103,10 +103,9 @@ export default class Stream<T> implements Observable<T> {
       const read = async () => {
         const reader = rs.getReader();
         const result = await reader.read();
+        reader.releaseLock();
         if (!result.done) {
           observer.next(result.value);
-          reader.releaseLock();
-          read();
         } else {
           observer.complete();
         }
@@ -116,7 +115,7 @@ export default class Stream<T> implements Observable<T> {
         observer.complete();
       };
 
-      // start reading data from the ReadableStream
+      // read a chunk
       read();
 
       return _streamFromReadableStream.unsubscribe;

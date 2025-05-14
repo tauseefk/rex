@@ -78,13 +78,16 @@ const rs = new ReadableStream({
 // Emit a tuple of values every 500 millisecond
 //
 // - `Stream.fromReadableStream(rs)` creates a stream that emits values read from the ReadableStream.
-const $readableStream = Stream.fromReadableStream(rs);
 
-$readableStream.subscribe({
-  next: (value) => {
-    console.log('$readableStream', value);
-  },
-  complete: () => {
-    console.log('$readableStream concluded');
-  },
-});
+$halfSecStream
+  .switchMap(() => {
+    return Stream.fromReadableStream(rs);
+  })
+  .subscribe({
+    next: (value) => {
+      console.log('$readableStream', value);
+    },
+    complete: () => {
+      console.log('$readableStream concluded');
+    },
+  });
