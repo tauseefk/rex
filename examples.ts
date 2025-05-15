@@ -79,13 +79,16 @@ const rs = new ReadableStream({
 //
 // - `Stream.fromReadableStream(rs)` creates a stream that emits values read from the ReadableStream.
 
-$halfSecStream
+const readableStreamUnsubscribe = $halfSecStream
   .switchMap(() => {
     return Stream.fromReadableStream(rs);
   })
   .subscribe({
-    next: (value) => {
+    next: ({ done, value }) => {
       console.log('$readableStream', value);
+      if (done) {
+        readableStreamUnsubscribe();
+      }
     },
     complete: () => {
       console.log('$readableStream concluded');
