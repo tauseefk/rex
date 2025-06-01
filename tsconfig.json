@@ -1,13 +1,19 @@
 {
   "compilerOptions": {
     "allowJs": false,
+    "outDir": "dist",
     "esModuleInterop": false,
+    "declaration": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "bundler",
     "module": "ESNext",
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "paths": {
+      "./src/*": ["./*"]
+    }
   },
-  "include": ["*.ts"],
-  "exclude": ["/dist"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
 }

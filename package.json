@@ -5,17 +5,29 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm run build",
     "examples": "node ./dist/examples.js",
-    "build": "tsc --outDir dist"
+    "build": "rimraf dist && npm run build:tsc && npm run build:esbuild",
+    "build:tsc": "tsc",
+    "build:esbuild": "node build.js",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tauseefk/rex.git"
   },
-  "keywords": ["observables", "streams"],
+  "keywords": [
+    "observables",
+    "streams"
+  ],
   "author": "tauseefk",
   "license": "MIT",
   "bugs": {
@@ -24,6 +36,8 @@
   "homepage": "https://github.com/tauseefk/rex#readme",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "esbuild": "^0.25.5",
+    "rimraf": "^6.0.1",
     "typescript": "^5.7.3"
   }
 }
