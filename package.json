@@ -1,6 +1,6 @@
 {
-  "name": "rex",
-  "version": "1.1.1",
+  "name": "rextream",
+  "version": "1.2.0",
   "description": "Everything is streams.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
