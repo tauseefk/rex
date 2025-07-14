@@ -94,3 +94,20 @@ const readableStreamUnsubscribe = $halfSecStream
       console.log('$readableStream concluded');
     },
   });
+
+// Emit all values eagerly
+//
+// - `Stream.eagerFromReadableStream(rs)` creates a stream that emits values read from the ReadableStream.
+
+const $eagerFromReadableStream = Stream.eagerFromReadableStream(rs);
+const eagerFromReadableStreamUnsubscribe = $eagerFromReadableStream.subscribe({
+  next: ({ done, value }) => {
+    console.log('$readableStream', value);
+    if (done) {
+      eagerFromReadableStreamUnsubscribe();
+    }
+  },
+  complete: () => {
+    console.log('$readableStream concluded');
+  },
+});
