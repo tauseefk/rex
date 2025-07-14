@@ -95,6 +95,7 @@ export default class Stream<T> implements Observable<T> {
   }
 
   /**
+   * Lazy stream
    * @param {ReadableStream<T>} rs
    * @returns {Stream<T>}
    */
@@ -109,6 +110,41 @@ export default class Stream<T> implements Observable<T> {
           reader.releaseLock();
           if (!result.done) {
             observer.next({ value: result.value, done: result.done });
+          } else {
+            observer.complete();
+          }
+        };
+
+        _streamFromReadableStream.unsubscribe = () => {
+          observer.complete();
+        };
+
+        // read a chunk
+        read();
+
+        return _streamFromReadableStream.unsubscribe;
+      });
+
+    return _streamFromReadableStream;
+  }
+
+  /**
+   * Eager stream
+   * @param {ReadableStream<T>} rs
+   * @returns {Stream<T>}
+   */
+  static eagerFromReadableStream<T>(
+    rs: ReadableStream<T>,
+  ): Stream<{ value: T; done: boolean }> {
+    const _streamFromReadableStream: Stream<{ value: T; done: boolean }> =
+      new Stream((observer) => {
+        const read = async () => {
+          const reader = rs.getReader();
+          const result = await reader.read();
+          reader.releaseLock();
+          if (!result.done) {
+            observer.next({ value: result.value, done: result.done });
+            await read();
           } else {
             observer.complete();
           }
